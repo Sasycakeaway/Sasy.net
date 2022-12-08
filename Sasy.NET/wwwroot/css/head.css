@@ -1,0 +1,11 @@
+@font-face {
+	font-family: 'Safiar Signature';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Safiar Signature'),
+		url('https://fonts.cdnfonts.com/s/33556/SafiarSignature.woff') format('woff');
+}
+
+.firma {
+	font-family: 'Safiar Signature', sans-serif;
+}

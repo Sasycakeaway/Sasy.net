@@ -1,0 +1,16 @@
+.titindirizzo {
+	position: absolute;
+	left: 30px;
+	/*color:white;*/
+}
+.social {
+	position: absolute;
+	right: 30px;
+	/*color:white;*/
+}
+.src {
+	position: absolute;
+	right: 30px;
+	margin-top: 70px;
+	/*color:white;*/
+}

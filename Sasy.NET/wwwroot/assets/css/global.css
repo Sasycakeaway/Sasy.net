@@ -1,0 +1,26 @@
+.navbar {
+    border-radius: 0;
+    background: #ff3e00 !important;
+}
+body {
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.form-check.form-control {
+    padding-left: 1.75rem;
+    height: auto;
+}
+a {
+	color: #FF3E00;
+	text-decoration: none;
+}
+.nav-button-group {
+    display: flex;
+    flex-direction: column;
+}
+.btn-block a {
+    display: block;
+}
+.nav-button-group .btn-block {
+    margin-bottom: .25rem;
+}

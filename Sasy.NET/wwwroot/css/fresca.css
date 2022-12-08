@@ -1,0 +1,82 @@
+.acc {
+	margin-top: 25px;
+}
+.acc1 {
+	margin-top: 35px;
+}
+.alt2 {
+	background-color: transparent;
+	margin-bottom: 10px;
+}
+.tot {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+.imghead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/macarons.jpg');
+	background-size: cover;
+}
+.det {
+	color: white;
+}
+.bishead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/brut.jpeg');
+	background-size: cover;
+}
+.torhead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/classiche.jpg');
+	background-size: cover;
+}
+h3 {
+	color: black;
+}
+.amhead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/redvelvet.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.reghead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/pastiera.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.dechead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/biscotti.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.apehead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/apeback.jpeg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.prahead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/praline/cioc.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.uovohead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/uovaback.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.parhead {
+	background-image: linear-gradient(rgba(58, 47, 47, 0.5), rgba(58, 47, 47, 0.5)),
+		url('https://sasyimg.imgix.net/macarons.jpg');
+	background-size: cover;
+}
+* {
+	border-radius: 8px;
+}
+.uk-card {
+	border: 2px solid black;
+}

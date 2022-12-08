@@ -1,0 +1,24 @@
+.cardimg {
+	width: 300px;
+	margin-bottom: 50px;
+}
+.classic {
+	margin-top: 10px;
+	opacity: 0;
+}
+.cantucci {
+	margin-top: 20px;
+}
+.noc {
+	margin-top: 25px;
+}
+.ashr {
+	width: 1px;
+}
+.pasti {
+	margin-top: 6px;
+	opacity: 0;
+}
+hr {
+	color: white;
+}
