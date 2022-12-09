@@ -11,26 +11,16 @@ let pathname = location.pathname;
 
 let links = null;
 routeLinks.subscribe(x => links = x);
-
+function facebook() {
+	window.open('https://www.facebook.com/sasy.cakeaway');
+}
+function instagram() {
+	window.open('https://www.instagram.com/sasy_cakeaway/');
+}
 </script>
 
 <Router>
 	<Header></Header>
-<!--<nav class="uk-navbar uk-navbar-container">-->
-<!--	<div class="container">-->
-<!--		<a class="navbar-brand" href="/">-->
-<!--			<i class="svg-logo svg-lg mr-1"></i>-->
-<!--			Sasy. NETa-->
-<!--		</a>-->
-<!--		<ul class="navbar-nav">-->
-<!--		{#each links as {path, label, exact} (label) }-->
-<!--			<li class="nav-item">-->
-<!--				<a href="{path}" class="nav-link" class:active={exact ? pathname == path : pathname.startsWith(path)} use:link>{label}</a>-->
-<!--			</li>-->
-<!--		{/each}-->
-<!--		</ul>-->
-<!--	</div>-->
-<!--</nav>-->
 <div class="container">
 	<div class="row p-4">
 		<div id="content">
@@ -41,3 +31,27 @@ routeLinks.subscribe(x => links = x);
 	</div>
 </div>
 </Router>
+
+<footer>
+	<p class="titindirizzo uk-align-center" id="text">
+		Mi trovi in Viale falchera 69 <br />
+		<a href="/Sasy - Privacy - 2022.pdf">Informativa sulla privacy</a>
+	</p>
+
+	<p style="color: black" id="social">Seguici su Instagram e Facebook</p>
+	<div uk-grid>
+		<div id="socialimg">
+			<a href="#0" on:click={instagram}
+			><img
+					alt="instagram"
+					src="https://img.icons8.com/material-outlined/48/000000/instagram-new--v1.png"
+			/></a
+			>
+		</div>
+		<div>
+			<a href="#0" on:click={facebook} alt="facebook"
+			><img src="https://img.icons8.com/ios/48/000000/facebook--v1.png" /></a
+			>
+		</div>
+	</div>
+</footer>
