@@ -18,6 +18,10 @@ import changepass from "../components/ecommerce/changepass.svelte";
 import deleterequest from "../components/ecommerce/deleterequest.svelte";
 import ordercomplete from "../components/ecommerce/ordercomplete.svelte";
 import recovery from "../components/ecommerce/recovery.svelte";
+import area from "../components/ecommerce/area/index.svelte";
+import pagamenti from "../components/ecommerce/pagamenti.svelte";
+import profilo from "../components/ecommerce/area/profilo.svelte";
+import ordini from "../components/ecommerce/area/ordini.svelte";
 
 export let component = null;
 export const routes = [
@@ -38,6 +42,10 @@ export const routes = [
     { path: '/ecommerce/deleterequest', label: "Cancella richiesta", component: deleterequest },
     { path: '/ecommerce/ordercomplete', label: "Ordine completato", component: ordercomplete },
     { path: '/ecommerce/recovery', label: "Recupera password", component: recovery },
+    { path: '/ecommerce/area', label: "Area Clienti", component: area },
+    { path: '/ecommerce/pagamenti', label: "Pagamenti", component: pagamenti },
+    { path: '/ecommerce/area/profilo', label: "Profilo", component: profilo },
+    { path: '/ecommerce/area/ordini', label: "Ordini", component: ordini },
 	{ component:Error404,  label:'Not Found',  hide:true },
 ];
 

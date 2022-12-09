@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace SvelteKitSample.Model
+namespace Sasy.NET.Model
 {
     [ApiController]
     [Route("api/[controller]")]

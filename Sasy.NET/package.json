@@ -9,6 +9,7 @@
     "publish": "npm run build && dotnet publish -c Release"
   },
   "dependencies": {
+    "@beyonk/async-script-loader": "^2.3.0",
     "@beyonk/svelte-googlemaps": "^3.2.0",
     "@contentful/rich-text-html-renderer": "^16.0.2",
     "@contentful/rich-text-types": "^16.0.2",

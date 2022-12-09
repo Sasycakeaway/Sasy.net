@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Microsoft.AspNetCore.Http;
-namespace SvelteKitSample.Model
+namespace Sasy.NET.Model
 {
     [ApiController]
     [Route("api/[controller]")]

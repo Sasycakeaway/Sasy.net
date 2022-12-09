@@ -8,7 +8,6 @@ function putorder(nome, cognome, indirizzo, cap, domicilio, email, cart, totale,
 	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
 	var urlencoded = new URLSearchParams();
-	console.log(totale);
 	urlencoded.append('id', id);
 	urlencoded.append('nome', nome);
 	urlencoded.append('cognome', cognome);
@@ -19,7 +18,6 @@ function putorder(nome, cognome, indirizzo, cap, domicilio, email, cart, totale,
 	urlencoded.append('cart', cart);
 	urlencoded.append('email', email);
 	urlencoded.append('spedizione', spedizione);
-
 	var requestOptions = {
 		method: 'POST',
 		headers: myHeaders,
@@ -27,11 +25,10 @@ function putorder(nome, cognome, indirizzo, cap, domicilio, email, cart, totale,
 		redirect: 'follow'
 	};
 
-	fetch('/ecommerce/pagamenti?/compra', requestOptions)
+	fetch('/api/AddOrder', requestOptions)
 		.then((response) => response.json())
 		.then(async (result) => {
-			console.log(result);
-			if (result.data.success == true) {
+			if (result == 1) {
 				try {
 					await emailjs.send('service_ccwtjlr', 'template_cavi0no', {
 						id: id,
@@ -42,14 +39,15 @@ function putorder(nome, cognome, indirizzo, cap, domicilio, email, cart, totale,
 					});
 					location.href = '/ecommerce/ordercomplete';
 				} catch (error) {
-					dialogs
-						.alert(
-							"Errore durante la registrazione dell'ordine, contattarci, fornendo i dettagli del pagamento per richiedere il rimborso"
-						)
-						.then(() => (location.href = '/'));
 					console.log(error);
 				}
-				sessionStorage.clear();
+				localStorage.clear();
+			}else{
+				dialogs
+					.alert(
+						"Errore durante la registrazione dell'ordine, contattarci, fornendo i dettagli del pagamento per richiedere il rimborso"
+					)
+					.then(() => (location.href = '/'));
 			}
 		})
 		.catch((err) => {
@@ -75,7 +73,8 @@ export async function init(
 
 	if (spedizione)	// Se i prodotti vengono spediti dobbiamo aggiungere 8 euro
 		totale = (parseInt(totale) + 8).toString();
-
+	
+	putorder(nome, cognome, indirizzo, cap, domicilio, email, cart, totale, cittavar, spedizione);
 	try {
 		await paypal_sdk.Buttons({
 			createOrder: function (data, actions) {

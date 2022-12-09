@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Data;
 
-namespace SvelteKitSample.Model
+namespace Sasy.NET.Model
 {
     [ApiController]
     [Route("api/[controller]")]

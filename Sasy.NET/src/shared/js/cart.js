@@ -1,10 +1,11 @@
 import { writable } from 'svelte/store';
-export let totale = 0;
+export let totale = parseInt(localStorage.getItem('totale'));
 export const cartstore = writable('cart');
 export const totstore = writable('totale');
 let cart = JSON.parse(localStorage.getItem('cart'));
 export function initcart() {
 	if (localStorage.getItem('cart') == null) {
+		cart = [];
 	} else {
 		cart = JSON.parse(localStorage.getItem('cart'));
 	}

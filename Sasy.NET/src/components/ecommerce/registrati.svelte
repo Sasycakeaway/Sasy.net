@@ -36,7 +36,8 @@
         user != undefined &&
         user != "" &&
         nascita != undefined &&
-        nascita != "" &&
+        nascita != "" && 
+        (nascita.getUTCFullYear() - new Date().getFullYear()) != 18 &&
         telefono != undefined &&
         telefono != "" &&
         telefono.length == 10

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
+using Sasy.NET.AES;
 
-
-namespace SvelteKitSample.Model
+namespace Sasy.NET.Model
 {
     public class PartialUser
     {
@@ -27,7 +27,7 @@ namespace SvelteKitSample.Model
                 {
                     var query = context.Utentis
                                        .Where(s => s.PkEmail == Email)
-                                       .First();
+                                       .FirstOrDefault();
              
                     if (query.Password == password)
                     {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Sasy.NET.AES;
 
-namespace SvelteKitSample.Model
+namespace Sasy.NET.Model
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -17,12 +18,13 @@ namespace SvelteKitSample.Model
             string cognome = AesOperation.EncryptString(key, value["cognome"]);
             string indirizzo = AesOperation.EncryptString(key, value["indirizzo"]);
             string cap = AesOperation.EncryptString(key, value["cap"]);
-            string domicilio = AesOperation.EncryptString(key, value["domicilio"]);
             string email = value["email"];
             int totale = int.Parse(value["totale"]);
             string cart = value["cart"];
             DateTime timestamp = DateTime.Now;
-
+            Boolean domicilio = Boolean.Parse(value["domicilio"]);
+            Boolean spedizione = Boolean.Parse(value["spedizione"]);
+            
                 try
                 {
                     using (var db = new SasyContext())
@@ -34,6 +36,7 @@ namespace SvelteKitSample.Model
                         order.Indirizzo = indirizzo;
                         order.Cap = cap;
                         order.Domicilio = domicilio;
+                        order.Spedizione = spedizione;
                         order.FkEmail = email;
                         order.Cart = cart;
                         order.Timestamp = timestamp;

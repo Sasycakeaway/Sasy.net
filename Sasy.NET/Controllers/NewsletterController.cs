@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using SvelteKitSample.Model;
 
-namespace SvelteKitSample.Controllers
+namespace Sasy.NET.Model
 {
     [Route("api/[controller]")]
     [ApiController]
