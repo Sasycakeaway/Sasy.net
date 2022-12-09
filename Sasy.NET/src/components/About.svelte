@@ -5,7 +5,7 @@
 	import { Circle2 } from 'svelte-loading-spinners';
 
 	let abouts: Array<About> = [];
-	let loading: boolean = true;
+	let loading = true;
 
 	async function get_time() {
 		let raw_about = await client.getEntries({

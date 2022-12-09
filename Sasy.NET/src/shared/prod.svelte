@@ -4,7 +4,7 @@
 	import { useLazyImage as lazyImage } from 'svelte-lazy-image';
 	import { Circle2 } from 'svelte-loading-spinners';
 	let cards: Array<Card> = [];
-	let loading: boolean = true;
+	let loading = true;
 
 	async function get_cards() {
 		let raw_card = await client.getEntries({

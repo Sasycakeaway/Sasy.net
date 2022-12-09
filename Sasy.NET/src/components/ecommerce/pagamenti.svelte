@@ -9,12 +9,12 @@
           cognome: string,
           indirizzo: string,
           cap: string,
-          domicilio: boolean = false,
+          domicilio = false,
           totale: string | null,
           cart: string | null,
           cittavar: string,
           email: string,
-          spedizione: boolean = false;
+          spedizione = false;
 
   onMount(async () => {
     await is_logged(false);

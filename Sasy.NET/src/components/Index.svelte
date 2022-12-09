@@ -4,7 +4,7 @@
 	import SvelteSeo from 'svelte-seo';
 	import { onMount } from 'svelte';
 	import GdprBanner from '../shared/Cookies_Banner/Banner.svelte';
-
+	
 	let choices = {
 		necessary: {
 			label: "Cookies dell'e-commerce",
@@ -42,12 +42,29 @@
 	<link rel="stylesheet" href="/css/index.css" />
 	<link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/grids-min.css" />
 	<link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/grids-responsive-min.css" />
+	<script
+			async
+			src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@latest/dist/lazyload.min.js"
+	></script>
 	<style>
 		.comitato_mobile {
 			/**Container del comitato per telefono*/
 			margin: 50px;
 		}
 	</style>
+	<script>
+		// Set the options globally
+		// to make LazyLoad self-initialize
+		window.lazyLoadOptions = {
+			// Your custom settings go here
+		};
+
+		// Listen to the initialization event
+		// and get the instance of LazyLoad
+		window.addEventListener("LazyLoad::Initialized", function (event) {
+			window.lazyLoadInstance = event.detail.instance;
+		}, false);
+	</script>
 </svelte:head>
 <SvelteSeo
 	jsonLd={{
@@ -152,15 +169,15 @@
 	</p>
 	<br />
 	<iframe
+			class="lazy"
 		width="1280"
 		height="720"
-		src="https://www.youtube.com/embed/jF6h8jJJuhc"
+		data-src="https://www.youtube.com/embed/jF6h8jJJuhc"
 		title="YouTube video player"
 		frameborder="0"
 		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 		allowfullscreen
-		id="ifname"
-	/>
+		id="ifname"></iframe>
 	<br />
 	<h4>Sasy's su LIVE SOCIAL</h4>
 	<p>

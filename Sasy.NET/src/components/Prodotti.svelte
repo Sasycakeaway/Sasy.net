@@ -6,7 +6,7 @@
 
 	let prods: Array<DropdownProd> = [];
 
-	let loading: boolean = true;
+	let loading = true;
 
 
 	onMount(async () => {

@@ -12,14 +12,14 @@
     let name: string,
         description: string,
         image: string,
-        all: boolean = true,
+        all = true,
         cit: string,
         header_info: Header_Info = { title: '', subtitle: '', image: '' },
         is_buyable: boolean,
         price: number,
         alert_string: string;
 
-    let loading: boolean = true;
+    let loading = true;
     const query = window.location.search;
     const prodotto = new URLSearchParams(query).get('prod');
     

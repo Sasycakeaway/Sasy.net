@@ -11,14 +11,14 @@ export async function is_logged(is_login: boolean){
             pass = cookie.split("=")[1];
     });
     if (user != null && pass != null) {
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-        var urlencoded = new URLSearchParams();
+        const urlencoded = new URLSearchParams();
         urlencoded.append("email", user);
         urlencoded.append("password", pass);
 
-        var requestOptions = {
+        const requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: urlencoded,

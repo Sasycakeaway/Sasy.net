@@ -23,7 +23,7 @@ import pagamenti from "../components/ecommerce/pagamenti.svelte";
 import profilo from "../components/ecommerce/area/profilo.svelte";
 import ordini from "../components/ecommerce/area/ordini.svelte";
 
-export let component = null;
+export const component = null;
 export const routes = [
 	{ path: '/',           label:'Index',       component:Index,      exact:true },
 	{ path: '/about',      label:'About',      component:About },
@@ -49,11 +49,11 @@ export const routes = [
 	{ component:Error404,  label:'Not Found',  hide:true },
 ];
 
-export let routeLinks = writable({});
+export const routeLinks = writable({});
 
 // required to patch in missing pushstate event
 (function(history:any) {
-    var pushState = history.pushState;
+    const pushState = history.pushState;
     history.pushState = function(state) {
         const ret = pushState.apply(history, arguments);
         window.dispatchEvent(new CustomEvent('pushstate', {

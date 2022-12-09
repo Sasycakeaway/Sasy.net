@@ -2,11 +2,13 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
-import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
+import { babel } from '@rollup/plugin-babel';
+import eslint from '@rollup/plugin-eslint';
+import terser from '@rollup/plugin-terser';
+import cleanup from 'rollup-plugin-cleanup';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -19,9 +21,11 @@ export default {
 		file: 'wwwroot/bundle.js'
 	},
 	plugins: [
-		dynamicImportVars({
-			include: ["components/statistiche.svelte","components/Contatti.svelte","components/Gallery.svelte","components/Decorati.svelte","components/Forbidden.svelte","components/Profile.svelte","components/ecommerce","components/Prodotti.svelte","components/Apebox.svelte","components/About.svelte","components/Ingredienti.svelte","components/why.svelte","components/SignIn.svelte","components/Index.svelte","components/Frolla_Cacao.svelte","components/Error404.svelte","components/Sacco_Di_Natale.svelte","components/SignUp.svelte",]
-		}),
+		babel({ babelHelpers: 'bundled' }),
+		terser(),
+		// eslint({
+		// 	fix: true
+		// }),
 		css({ output: 'public/build/vendor.css' }),
 		svelte({
 			compilerOptions: {
@@ -47,6 +51,7 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
+		cleanup(),
 		typescript({ 
 			sourceMap: !production
 		}),
