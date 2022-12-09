@@ -18,7 +18,7 @@ namespace Sasy.NET.Model
             string cognome = AesOperation.EncryptString(key, value["cognome"]);
             string indirizzo = AesOperation.EncryptString(key, value["indirizzo"]);
             string cap = AesOperation.EncryptString(key, value["cap"]);
-            string email = value["email"];
+            string email = Request.Cookies["username"];
             int totale = int.Parse(value["totale"]);
             string cart = value["cart"];
             DateTime timestamp = DateTime.Now;

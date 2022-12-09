@@ -1,5 +1,6 @@
 <script lang="ts">
   import { init } from '../../shared/js/paypal.js';
+  import { init_totale } from '../../shared/js/cart.js';
   import { onMount } from 'svelte';
   import { GooglePlacesAutocomplete } from '@beyonk/svelte-googlemaps';
   import {is_logged} from "../../shared/js/is_logged";
@@ -16,23 +17,15 @@
           spedizione: boolean = false;
 
   onMount(async () => {
-    email = sessionStorage.getItem("email");
-    totale = localStorage.getItem('totale');
-    cart = localStorage.getItem('cart');
     await is_logged(false);
+    totale = await init_totale();
   });
 
   function pagamento() {
     if (nome != null && cognome != null && indirizzo != null && cap != null && cittavar != null) {
       indirizzo = cittavar + ',' + indirizzo;
-      let json_cart;
-      if (cart != null) json_cart = JSON.parse(cart);
 
-      for (let i = 0; i < json_cart.length; i++) {
-        json_cart[i].image = ''; // Sanitize the image property for DB
-      }
-
-      const dom = document.getElementById("domicilio");	// Sveltekit don't support bind:checked for checkbox so we need to use vanilla JS
+      const dom = document.getElementById("domicilio_sped");	// Sveltekit don't support bind:checked for checkbox so we need to use vanilla JS
       const sped = document.getElementById("spedizione");
       if(dom instanceof HTMLInputElement && sped instanceof HTMLInputElement){
         if(dom.checked)
@@ -40,7 +33,6 @@
         if(sped.checked)
           spedizione = true;
       }
-
       init(
               totale,
               nome,
@@ -48,8 +40,6 @@
               indirizzo,
               cap,
               domicilio,
-              email,
-              JSON.stringify(json_cart),
               cittavar,
               spedizione
       );
@@ -60,57 +50,6 @@
   function citta(e) {
     cittavar = e.detail.place.formatted_address;
   }
-  // import { dialogs } from "svelte-dialogs";
-  // import md5 from "md5";
-  // import { init, getorder, getvariable } from "../../shared/js/paypal.js";
-  // import { onMount } from "svelte";
-  // import { GooglePlacesAutocomplete } from "@beyonk/svelte-googlemaps";
-  // //import google from 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBomQdV10KKTb45y-uIXWl-ZlFgyEOxcsc&libraries=places&callback=initMap'
-  // let nome,
-  //   cognome,
-  //   indirizzo,
-  //   cap,
-  //   domicilio = false,
-  //   totale,
-  //   user,
-  //   pass,
-  //   cart,
-  //   cittavar;
-  // onMount(async () => {
-  //   user = sessionStorage.getItem("email");
-  //   totale = localStorage.getItem("totale");
-  //   pass = sessionStorage.getItem("password");
-  //   cart = localStorage.getItem("cart");
-  //   if (user == null || pass == null) {
-  //     dialogs
-  //       .alert("Per completare il pagamento devi accedere al sito")
-  //       .then(() => {
-  //         location.href = "/ecommerce/login";
-  //       });
-  //   }
-  // });
-  // function pagamento() {
-  //   if (nome != null && cognome != null && indirizzo != null && cap != null) {
-  //     indirizzo = cittavar + "," + indirizzo;
-  //     console.log(domicilio.toString());
-  //     init(
-  //       totale,
-  //       nome,
-  //       cognome,
-  //       indirizzo,
-  //       cap,
-  //       domicilio.toString(),
-  //       user,
-  //       pass,
-  //       cart
-  //     );
-  //     document.getElementById("conf").style.visibility = "hidden";
-  //   } else alert("Compila tutti i campi richiesti");
-  // }
-  //
-  // function citta(e) {
-  //   cittavar = e.detail.place.formatted_address;
-  // }
 </script>
 
 <svelte:head>

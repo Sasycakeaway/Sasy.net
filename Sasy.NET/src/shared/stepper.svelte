@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let qty;
 	export let prod: string;
+	export let costo;
 	import { initcart } from './js/cart.js';
 	import { dialogs } from 'svelte-dialogs';
 	import { onMount } from 'svelte';
@@ -14,77 +15,111 @@
 	export let ida;
 
 	onMount(async () => {
-		cart = initcart();
-		totale = localStorage.getItem('totale');
 		const raw_prod = await client?.getEntries({
 			content_type: 'prodotti'
 		});
 		prods = raw_prod?.items;
 	});
 
-	function minus(e) {
-		cart.forEach(async (value, i) => {
-			if (value.id == prod) {
-				// Il prodotto esiste
-				if (value.qty > 1) {
-					// Il prodotto non è l'ultimo
-					cart[i].qty--;
-					const prodotto = prods.filter((prod_raw) => prod_raw.fields.prodottoName == prod); // Prendo il prodotto dal CMS
-					if (prodotto.length > 0) {
-						// Il prodotto esiste nel CMS
-						cart[i].prezzo -= prodotto[0].fields.price;
-						totale -= prodotto[0].fields.price;
-						qty--;
+	async function minus(e) {
+		if(qty == 1){
+			let response = await dialogs.confirm("Vuoi rimuovere il prodotto dal carrello?");
+			if(response){
+				var myHeaders = new Headers();
+				myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+				var urlencoded = new URLSearchParams();
+				urlencoded.append("prodotto", prod);
+				urlencoded.append("all", "false");
+				urlencoded.append("nuke", "false");
+				
+				var requestOptions = {
+					method: "DELETE",
+					headers: myHeaders,
+					body: urlencoded,
+					redirect: "follow",
+				};
 
-						localStorage.setItem('cart', JSON.stringify(cart));
-						localStorage.setItem('totale', totale);
-
-						dispatch('minus', {
-							text: ida
+				fetch("/api/Cart", requestOptions)
+						.then((response) => response.text())
+						.then(async (result) => {
+							if (!result) {
+								dialogs.alert("Errore durante l'inserimento nel carrello");
+							} else {
+								dispatch('minus', {
+									text: ida
+								});
+							}
+						})
+						.catch((error) => {
+							console.error(error);
+							dialogs.alert("Errore durante l'inserimento nel carrello");
 						});
-					} else dialogs.alert('Errore durante la rimozione del prodotto');
-				} else {
-					let resp = await dialogs.confirm('Vuoi eliminare il prodotto?');
-					if (resp) {
-						const prodotto = prods.filter((prod_raw) => prod_raw.fields.prodottoName == prod); // Prendo il prodotto dal CMS
-						if (prodotto.length > 0) {
-							// Il prodotto esiste nel CMS
-							cart[i].prezzo -= prodotto[0].fields.price;
-							totale -= prodotto[0].fields.price;
-							cart.splice(i, 1);
+			}
+		}else{
+			var myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+			var urlencoded = new URLSearchParams();
+			urlencoded.append("prodotto", prod);
+			urlencoded.append("all", "false");
+			urlencoded.append("nuke", "false");
+			
+			var requestOptions = {
+				method: "DELETE",
+				headers: myHeaders,
+				body: urlencoded,
+				redirect: "follow",
+			};
+
+			fetch("/api/Cart", requestOptions)
+					.then((response) => response.text())
+					.then(async (result) => {
+						if (!result) {
+							dialogs.alert("Errore durante l'inserimento nel carrello");
+						} else {
 							dispatch('minus', {
 								text: ida
 							});
-						} else dialogs.alert('Errore durante la rimozione del prodotto');
-					}
-					localStorage.setItem('cart', JSON.stringify(cart));
-					localStorage.setItem('totale', totale);
-					location.reload();
-				}
-			}
-		});
+						}
+					})
+					.catch((error) => {
+						console.error(error);
+						dialogs.alert("Errore durante l'inserimento nel carrello");
+					});
+		}
+		
 	}
 
 	function plus(e) {
-		cart.forEach((value, i) => {
-			if (value.id == prod) {
-				const prodotto = prods.filter((prod_raw) => prod_raw.fields.prodottoName == prod); // Prendo il prodotto dal CMS
-				totale = parseInt(totale);
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+		console.log(prod);
+		var urlencoded = new URLSearchParams();
+		urlencoded.append("prodotto", prod);
+		urlencoded.append("qty", "1");
+		urlencoded.append("costo", costo);
+		
+		var requestOptions = {
+			method: "POST",
+			headers: myHeaders,
+			body: urlencoded,
+			redirect: "follow",
+		};
 
-				if (prodotto.length > 0) {
-					cart[i].qty++;
-					qty++;
-					cart[i].prezzo += prodotto[0].fields.price;
-					totale += prodotto[0].fields.price;
-				} else dialogs.alert("Errore durante l'aggiunta del prodotto");
-
-				localStorage.setItem('cart', JSON.stringify(cart));
-				localStorage.setItem('totale', totale);
-				dispatch('plus', {
-					text: ida
+		fetch("/api/Cart", requestOptions)
+				.then((response) => response.text())
+				.then(async (result) => {
+					if (!result) {
+						dialogs.alert("Errore durante l'inserimento nel carrello");
+					} else {
+								dispatch('plus', {
+									text: ida
+								});
+					}
+				})
+				.catch((error) => {
+					console.error(error);
+					dialogs.alert("Errore durante l'inserimento nel carrello");
 				});
-			}
-		});
 	}
 </script>
 

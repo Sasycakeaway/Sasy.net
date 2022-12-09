@@ -19,19 +19,19 @@ function instagram() {
 }
 </script>
 
+<svelte:head>
+	<link rel="stylesheet" href="/css/footer.css" />
+</svelte:head>
+
 <Router>
 	<Header></Header>
-<div class="container">
-	<div class="row p-4">
-		<div id="content">
 			{#each routes as {path,component}}
 				<Route path="{path}" component="{component}" />
 			{/each}
-		</div>
-	</div>
-</div>
 </Router>
 
+<br/>
+<br/>
 <footer>
 	<p class="titindirizzo uk-align-center" id="text">
 		Mi trovi in Viale falchera 69 <br />
@@ -55,3 +55,23 @@ function instagram() {
 		</div>
 	</div>
 </footer>
+
+<style>
+	footer {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 40px;
+		background-color: #ffffff;
+	}
+	footer a {
+		font-weight: bold;
+	}
+	.uk-position-relative {
+		color: black;
+	}
+	.socialmobile {
+		margin-top: 120px;
+	}
+</style>

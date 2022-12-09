@@ -3,18 +3,49 @@
 	import { onMount } from 'svelte';
 	import Stepper from '../../shared/stepper.svelte';
 	import client from '../../shared/js/contentfulClient';
+	import {dialogs} from "svelte-dialogs";
 
 	let cart = [];
 	let verifica;
 	let totale;
 	let prods: Array<Prodotto_Raw> = [];
 
+	function totale_calculator(){
+		let tot = 0;
+		cart.forEach(prod => {
+			tot += prod.qty * prod.costo;
+		});
+		return tot;
+	}
+	
 	function removeall() {
-		cart = [];
-		totale = 0;
-		localStorage.setItem('cart', JSON.stringify(cart));
-		localStorage.setItem('totale', totale);
-		verifica = check();
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+		var urlencoded = new URLSearchParams();
+		urlencoded.append("all", "true");
+
+		var requestOptions = {
+			method: "DELETE",
+			headers: myHeaders,
+			body: urlencoded,
+			redirect: "follow",
+		};
+
+		fetch("/api/Cart", requestOptions)
+				.then((response) => response.text())
+				.then(async (result) => {
+					if (!result) {
+						dialogs.alert("Errore durante l'inserimento nel carrello");
+					} else {
+						cart = await initcart();
+						totale = totale_calculator();
+					}
+				})
+				.catch((error) => {
+					console.error(error);
+					dialogs.alert("Errore durante l'inserimento nel carrello");
+				});
 	}
 
 	function check() {
@@ -25,60 +56,71 @@
 		}
 	}
 
+	function fill_cart_image(){
+		cart.forEach(function (prod, i) {
+			const prodotto = prods.filter(
+					(prod_raw) => prod_raw.fields.prodottoName == prod.prodotto
+			);
+			cart[i].image = prodotto[0].fields.headerPhoto.fields.file.url.replace("//", "https://")
+		});
+	}
+	
 	onMount(async () => {
-		cart = initcart();
-		totale = localStorage.getItem('totale');
+		cart = await initcart();
+		totale = totale_calculator();
 		verifica = check();
 		const raw_prod = await client?.getEntries({
 			content_type: 'prodotti'
 		});
 		prods = raw_prod?.items;
+		fill_cart_image();
 	});
 
 	async function min(e) {
-		totale = localStorage.getItem('totale');
-		const prodotto = prods.filter(
-			(prod_raw) => prod_raw.fields.prodottoName == cart[e.detail.text].id
-		); // Prendo il prodotto dal CMS
-		if (prodotto.length > 0) {
-			cart[e.detail.text].prezzo -= prodotto[0].fields.price;
-			cart[e.detail.text].qty--;
-		}
+		cart = await initcart();
+		totale = totale_calculator();
+		fill_cart_image();
 	}
 
-	function plu(e) {
-		totale = localStorage.getItem('totale');
-		const prodotto = prods.filter(
-			(prod_raw) => prod_raw.fields.prodottoName == cart[e.detail.text].id
-		); // Prendo il prodotto dal CMS
-		if (prodotto.length > 0) {
-			cart[e.detail.text].prezzo += prodotto[0].fields.price;
-			cart[e.detail.text].qty++;
-		}
+	async function plu(e) {
+		cart = await initcart();
+		totale = totale_calculator();
+		fill_cart_image();
 	}
 
-	function bin(e) {
-		let temp;
+	async function bin(e) {
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+		var urlencoded = new URLSearchParams();
+		urlencoded.append("prodotto", e);
+		urlencoded.append("all", "false");
+		urlencoded.append("nuke", "true");
 
-		totale = localStorage.getItem('totale');
+		var requestOptions = {
+			method: "DELETE",
+			headers: myHeaders,
+			body: urlencoded,
+			redirect: "follow",
+		};
 
-		cart.forEach((prod, i) => {
-			if (prod.id == e) {
-				temp = i;
-			}
-		});
-
-		const prodotto = prods.filter((prod_raw) => prod_raw.fields.prodottoName == e); // Prendo il prodotto dal CMS
-		if (prodotto.length > 0) {
-			totale -= prodotto[0].fields.price;
-		}
-
-		cart = cart.filter((prod) => prod.id != e);
-
-		localStorage.setItem('cart', JSON.stringify(cart));
-		localStorage.setItem('totale', totale.toString());
+		fetch("/api/Cart", requestOptions)
+				.then((response) => response.text())
+				.then(async (result) => {
+					if (!result) {
+						dialogs.alert("Errore durante l'inserimento nel carrello");
+					}else{
+						cart = await initcart();
+						totale = totale_calculator();
+						fill_cart_image();
+					}
+				})
+				.catch((error) => {
+					console.error(error);
+					dialogs.alert("Errore durante l'inserimento nel carrello");
+				});
 
 	}
+	
 </script>
 
 <svelte:head>
@@ -96,7 +138,7 @@
 	></script>
 </svelte:head>
 <br />
-{#if verifica == '{}'}
+{#if cart.length == 0}
 	<h1 align="center">Carrello vuoto, aggiungi prodotti al carrello visitando le pagine del sito</h1>
 {:else}
 	<div class="list">
@@ -127,7 +169,7 @@
 									<div class="row">
 										<div class="col">
 											<p />
-											<p>{prod.id}</p>
+											<p>{prod.prodotto}</p>
 											{#if prod.id != 'Cupcake' && prod.id != 'Muffin' && prod.id != 'Cakepop' && prod.id != 'Zeppole di San Giovanni' && prod.id == 'Il Trasformista'}
 												<p>Peso: {cart[i].qty * 250}g</p>
 											{:else if prod.id == 'Il trasformista'}
@@ -150,14 +192,14 @@
 												alt="cestino"
 												src="https://img.icons8.com/external-kosonicon-solid-kosonicon/48/000000/external-bin-cleaning-kosonicon-solid-kosonicon.png"
 												class="cestino"
-												id={prod.id}
-												on:click={() => bin(prod.id)}
+												id={prod.prodotto}
+												on:click={() => bin(prod.prodotto)}
 											/>
 										</div>
 									</div>
 								</div>
 								{#if prod.id != 'Il trasformista'}
-									<Stepper qty={prod.qty} ida={i} prod={prod.id} on:minus={min} on:plus={plu} />
+									<Stepper qty={prod.qty} ida={i} prod={prod.prodotto} costo={prod.costo} on:minus={min} on:plus={plu} />
 								{/if}
 							</div>
 						</div>
@@ -176,12 +218,12 @@
 			<div class="row">
 				<div class="col">
 					{#each cart as prod}
-						<p>{prod.id}</p>
+						<p>{prod.prodotto}</p>
 					{/each}
 				</div>
 				<div class="col">
 					{#each cart as prod}
-						<p>{prod.prezzo}&euro;</p>
+						<p>{(prod.costo * prod.qty)}&euro;</p>
 					{/each}
 				</div>
 			</div>
@@ -195,7 +237,7 @@
 	</div>
 </div>
 <br />
-{#if verifica != '{}'}
+{#if cart.length != 0}
 	<div align="center">
 		<a href="/ecommerce/pagamenti"
 			><button class="uk-button uk-button-primary">Completa l'ordine</button></a

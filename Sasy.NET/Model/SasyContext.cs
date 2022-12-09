@@ -15,6 +15,8 @@ public partial class SasyContext : DbContext
     {
     }
 
+    public virtual DbSet<Cart> Carts { get; set; }
+
     public virtual DbSet<Newsletter> Newsletters { get; set; }
 
     public virtual DbSet<Ordini> Ordinis { get; set; }
@@ -29,6 +31,20 @@ public partial class SasyContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.HasKey(e => new { e.Prodotto, e.Email });
+
+            entity.ToTable("Cart");
+
+            entity.Property(e => e.Prodotto).HasMaxLength(100);
+            entity.Property(e => e.Email).HasMaxLength(100);
+
+            entity.HasOne(d => d.EmailNavigation).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.Email)
+                .HasConstraintName("FK_Email_Email");
+        });
+
         modelBuilder.Entity<Newsletter>(entity =>
         {
             entity.HasKey(e => new { e.FkEmail, e.PkToken });

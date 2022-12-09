@@ -19,6 +19,8 @@ public partial class Utenti
 
     public byte[]? News { get; set; }
 
+    public virtual ICollection<Cart> Carts { get; } = new List<Cart>();
+
     public virtual ICollection<Newsletter> Newsletters { get; } = new List<Newsletter>();
 
     public virtual ICollection<Ordini> Ordinis { get; } = new List<Ordini>();
