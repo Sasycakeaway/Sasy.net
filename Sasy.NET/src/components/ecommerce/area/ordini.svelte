@@ -1,57 +1,21 @@
 <script>
-  const ENDPOINT = "http://149.102.141.16/getordersbypass";
-  const LOGINENDPOINT = "http://149.102.141.16/login";
+  import {is_logged} from "../../../shared/js/is_logged";
   import { Circle3 } from "svelte-loading-spinners";
   import { onMount } from "svelte";
-  import { dialogs } from "svelte-dialogs";
+  import {dialogs} from "svelte-dialogs";
   let ordini = [],
     loading = true;
   onMount(async () => {
-    let user = sessionStorage.getItem("email");
-    let pass = sessionStorage.getItem("password");
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("email", user);
-    urlencoded.append("password", pass);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    fetch("/api/login", requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-        if (result == "1") {
-          var myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-          var urlencoded = new URLSearchParams();
-          urlencoded.append("email", user);
-          urlencoded.append("password", pass);
-
-          var requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: urlencoded,
-            redirect: "follow",
-          };
-
-          fetch("/api/getordersbypass", requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-              ordini = data;
-              console.log(ordini);
-              loading = false;
-            })
-            .catch((error) => console.log("error", error));
+        if (await is_logged(false)) {
+          try {
+            const data_raw = await fetch("/api/GetOrdersByPass");
+            ordini = await data_raw.json();
+            loading = false;
+          }catch (e) {
+            console.error(e);
+            dialogs.alert("Errore durante il recupero degli ordini");
+          }
         }
-      })
-      .catch((error) => console.log("error", error));
   });
 </script>
 

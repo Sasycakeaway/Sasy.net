@@ -47,7 +47,9 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
-		typescript({ sourceMap: !production }),
+		typescript({ 
+			sourceMap: !production
+		}),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production

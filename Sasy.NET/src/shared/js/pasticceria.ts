@@ -1,9 +1,8 @@
 import { onMount } from 'svelte';
-import { pusha, initcart } from './cart';
+import { pusha } from './cart';
 import { dialogs } from 'svelte-dialogs';
 export function initpage() {
 	onMount(() => {
-		initcart();
 		if (/Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent)) {
 		} else {
 			const card = document.getElementById('card');

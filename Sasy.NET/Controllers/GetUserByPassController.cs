@@ -15,18 +15,18 @@ namespace Sasy.NET.Model
     [Route("api/[controller]")]
     public class GetUserByPassController : ControllerBase
     {
-        [HttpPost]
-        public string Get([FromForm] IFormCollection request)
+        [HttpGet]
+        public string Get()
         {
             var key = System.Configuration.ConfigurationManager.AppSettings.Get("DecryptionKey");
-            string Email = request["email"];
-            string password = request["password"];
+            string? email = Request.Cookies["username"];
+            string? password = Request.Cookies["password"];
             try
             {
                 using (var context = new SasyContext())
                 {
                     var query = context.Utentis
-                                       .Where(s => s.PkEmail == Email)
+                                       .Where(s => s.PkEmail == email)
                                        .FirstOrDefault();
              
                     if (query.Password == password)

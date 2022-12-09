@@ -1,10 +1,10 @@
 <script>
   import { dialogs } from "svelte-dialogs";
-  import md5 from "md5";
   import emailjs from "@emailjs/browser";
   import { onMount } from "svelte";
   import * as CodiceFiscaleUtils from "@marketto/codice-fiscale-utils";
   import { Circle2 } from "svelte-loading-spinners";
+  import { sha256 } from "../../shared/sha256";
   import Fa from "svelte-fa/src/fa.svelte";
   import {
     faEye,
@@ -24,7 +24,7 @@
     showcheck = false,
     privacy = false;
 
-  function registrati() {
+  async function registrati() {
     if (privacy) {
       buttonpress = true;
       let regDate = new Date();
@@ -36,8 +36,7 @@
         user != undefined &&
         user != "" &&
         nascita != undefined &&
-        nascita != "" && 
-        (nascita.getUTCFullYear() - new Date().getFullYear()) != 18 &&
+        nascita != "" &&
         telefono != undefined &&
         telefono != "" &&
         telefono.length == 10
@@ -50,7 +49,7 @@
         urlencoded.append("nascita", nascita);
         urlencoded.append("telefono", telefono);
         urlencoded.append("email", user);
-        urlencoded.append("password", md5(pass));
+        urlencoded.append("password", await sha256(pass));
         urlencoded.append("timestamp", isodate);
         urlencoded.append("news", news);
         let newsremove =

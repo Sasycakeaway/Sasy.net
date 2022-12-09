@@ -1,99 +1,23 @@
 <script>
-  const ENDPOINT = "http://149.102.141.16/login";
-  const ENDPOINT2 = "http://149.102.141.16/getuserbypass";
+  import {is_logged} from "../../../shared/js/is_logged";
   import { onMount } from "svelte";
-  import { dialogs } from "svelte-dialogs";
-  let email, cf, nascita, telefono, pass, newemail;
+  import {dialogs} from "svelte-dialogs";
+  let email, cf, nascita, telefono, newemail;
   onMount(async () => {
-    let user = sessionStorage.getItem("email");
-    newemail = user;
-    let pass = sessionStorage.getItem("password");
-    if (user == null || pass == null) {
-      location.href = "/ecommerce/login";
-    } else {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("email", user);
-      urlencoded.append("password", pass);
-
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: "follow",
-      };
-
-      fetch("/api/login", requestOptions)
-        .then((response) => response.text())
-        .then((result) => {
-          if (result == "1") {
-            var myHeaders = new Headers();
-            myHeaders.append(
-              "Content-Type",
-              "application/x-www-form-urlencoded"
-            );
-
-            var urlencoded = new URLSearchParams();
-            urlencoded.append("email", user);
-            urlencoded.append("password", pass);
-
-            var requestOptions = {
-              method: "POST",
-              headers: myHeaders,
-              body: urlencoded,
-              redirect: "follow",
-            };
-
-            fetch("/api/getuserbypass", requestOptions)
-              .then((response) => response.json())
-              .then((data) => {
+    const cookies = document.cookie.split(";");
+    cookies.forEach(cookie => {
+      if(cookie.includes("username"))
+        newemail = cookie.split("=")[1].replace("%40", "@");
+    });
+          if (await is_logged(false)) {
+            const data_raw = await fetch("/api/GetUserByPass").catch(error => dialogs.alert("Errore durante il recupero dei dati")) ;
+            const data = await data_raw.json();
                 cf = data.Cf;
                 telefono = data.Telefono;
                 nascita = data.Nascita;
-              })
-              .catch((error) => console.log("error", error));
           } else {
             location.href = "/ecommerce/login";
           }
-        })
-        .catch((error) => console.log("error", error));
-      // fetch(ENDPOINT, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(dati),
-      // })
-      //   .then((response) => response.json())
-      //   .then(async (data) => {
-      //     if (data.status != "1") {
-      //       location.href = "/ecommerce/login";
-      //     } else {
-      //       fetch(ENDPOINT2, {
-      //         method: "POST", // or 'PUT'
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: JSON.stringify(dati),
-      //       })
-      //         .then((response) => response.json())
-      //         .then((data) => {
-      //           cf = data.cf;
-      //           (telefono = data.telefono), (nascita = data.nascita);
-      //         })
-      //         .catch((error) => {
-      //           console.error("Error:", error);
-      //         });
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     dialogs.alert(
-      //       "Errore di connessione al server API, contattare l'assistenza"
-      //     );
-      //   });
-    }
   });
 </script>
 

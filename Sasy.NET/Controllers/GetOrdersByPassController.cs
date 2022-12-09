@@ -9,14 +9,13 @@ namespace Sasy.NET.Model
     [Route("api/[controller]")]
     public class GetOrdersByPassController : ControllerBase
     {
-        [HttpPost]
-        public string Get([FromForm] IFormCollection request)
+        [HttpGet]
+        public string Get()
         {
             var key = System.Configuration.ConfigurationManager.AppSettings.Get("DecryptionKey");
-            string email = request["email"];
-            string password = request["password"];
-
-            try { 
+                string? email = Request.Cookies["username"];
+                string? password = Request.Cookies["password"];
+                try { 
                 using (var db = new SasyContext())
                 {
                     using (var context = new SasyContext())

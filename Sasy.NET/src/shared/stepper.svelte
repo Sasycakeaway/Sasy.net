@@ -33,7 +33,7 @@
 					if (prodotto.length > 0) {
 						// Il prodotto esiste nel CMS
 						cart[i].prezzo -= prodotto[0].fields.price;
-						totale = prodotto[0].fields.price;
+						totale -= prodotto[0].fields.price;
 						qty--;
 
 						localStorage.setItem('cart', JSON.stringify(cart));

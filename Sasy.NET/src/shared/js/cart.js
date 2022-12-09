@@ -1,18 +1,25 @@
-import { writable } from 'svelte/store';
-export let totale = parseInt(localStorage.getItem('totale'));
-export const cartstore = writable('cart');
-export const totstore = writable('totale');
-let cart = JSON.parse(localStorage.getItem('cart'));
+let totale;
+let cart;
 export function initcart() {
-	if (localStorage.getItem('cart') == null) {
-		cart = [];
+	const cart_store = localStorage.getItem('cart');
+	if ( cart_store == null) {
+		return [];
 	} else {
-		cart = JSON.parse(localStorage.getItem('cart'));
+		return JSON.parse(cart_store);
 	}
-	return cart;
+}
+
+export function init_totale(){
+	const totale_store = localStorage.getItem('totale');
+	if(totale == null)
+		return 0;
+	else 
+		return totale;
 }
 
 export function pusha(ida, qty, prezzo, image) {
+	cart = initcart();
+	totale = init_totale();
 	let count = 0;
 	for (var i = 0; i < cart.length; i++) {
 		if (cart[i].id == ida) {
@@ -24,14 +31,8 @@ export function pusha(ida, qty, prezzo, image) {
 		cart.push({ id: ida, qty: qty, prezzo: prezzo * qty, image: image });
 	}
 	totale += prezzo * qty;
-	totstore.set(totale);
-	totstore.subscribe((value) => {
-		localStorage.setItem('totale', value);
-	});
-	cartstore.set(JSON.stringify(cart));
-	cartstore.subscribe((value) => {
-		localStorage.setItem('cart', value);
-	});
+	localStorage.setItem('totale', totale);
+	localStorage.setItem('cart', JSON.stringify(cart));
 }
 export function pushatra(prodotti) {
 	let trasformista = [];
@@ -52,13 +53,7 @@ export function pushatra(prodotti) {
 			prezzo: 18
 		});
 		totale = totale + 18;
-		totstore.set(totale);
-		totstore.subscribe((value) => {
-			localStorage.setItem('totale', value);
-		});
-		cartstore.set(JSON.stringify(cart));
-		cartstore.subscribe((value) => {
-			localStorage.setItem('cart', value);
-		});
+		localStorage.setItem('totale', totale);
+		localStorage.setItem('cart', JSON.stringify(cart));
 	}
 }

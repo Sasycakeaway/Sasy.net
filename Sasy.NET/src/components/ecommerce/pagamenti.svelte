@@ -2,6 +2,7 @@
   import { init } from '../../shared/js/paypal.js';
   import { onMount } from 'svelte';
   import { GooglePlacesAutocomplete } from '@beyonk/svelte-googlemaps';
+  import {is_logged} from "../../shared/js/is_logged";
 
   let nome: string,
           cognome: string,
@@ -18,6 +19,7 @@
     email = sessionStorage.getItem("email");
     totale = localStorage.getItem('totale');
     cart = localStorage.getItem('cart');
+    await is_logged(false);
   });
 
   function pagamento() {

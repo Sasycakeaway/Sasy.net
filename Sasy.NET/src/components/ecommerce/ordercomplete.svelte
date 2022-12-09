@@ -1,3 +1,10 @@
+<script>
+  import { onMount } from 'svelte';
+  import {is_logged} from "../../shared/js/is_logged";
+  onMount(async() => {
+    await is_logged(false);
+  });
+</script> 
 <br />
 <div style="text-align: center;">
   <img src="/favicon.png" alt="logo" />

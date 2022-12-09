@@ -1,50 +1,18 @@
 <script>
-  import { dialogs } from "svelte-dialogs";
   import { onMount } from "svelte";
+  import {is_logged} from "../../../shared/js/is_logged";
   function logout() {
     localStorage.clear();
     sessionStorage.clear();
     location.href = "/";
   }
-  onMount(() => {
+  onMount(async () => {
     if (
       /Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent)
     ) {
        document.getElementById("cards").style.paddingRight = "30px";
-
     }
-    let user = sessionStorage.getItem("email");
-    let pass = sessionStorage.getItem("password");
-    if (user == null || pass == null) {
-      location.href = "/ecommerce/login";
-    } else {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("email", user);
-      urlencoded.append("password", pass);
-
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: "follow",
-      };
-
-      fetch("/api/login", requestOptions)
-        .then((response) => response.text())
-        .then((result) => {
-          if (result != "1") {
-            location.href = "/ecommerce/login";
-          }
-        })
-        .catch((error) => {
-          dialogs.alert(
-            "Errore di connessione al server API, contattare l'assistenza"
-          );
-        });
-    }
+    await is_logged(false);
   });
 </script>
 
