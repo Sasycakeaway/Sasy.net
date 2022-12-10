@@ -19,11 +19,16 @@ export async function init_totale(){
 export async function pusha(ida, qty, prezzo, image) {
 	const cookies = document.cookie.split(";");
 	cookies.forEach(cookie => {
-		if(cookie.includes("username"))
+		if(cookie.includes("username")){
 			if(cookie.split("=")[1].replace("%40", "@") == null){
 				dialogs.alert("Per aggiungere prodotti al carrello devi registrarti sul sito");
 				return false;
 			}
+		}else{
+			dialogs.alert("Per aggiungere prodotti al carrello devi registrarti sul sito");
+			return false;
+		}
+
 	});
 	var myHeaders = new Headers();
 	myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -59,6 +64,9 @@ export function pushatra(prodotti) {
 	cookies.forEach(cookie => {
 		if(cookie.includes("username"))
 			if(cookie.split("=")[1].replace("%40", "@") == null){
+				dialogs.alert("Per aggiungere prodotti al carrello devi registrarti sul sito");
+				return false;
+			}else{
 				dialogs.alert("Per aggiungere prodotti al carrello devi registrarti sul sito");
 				return false;
 			}

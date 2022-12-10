@@ -42,6 +42,7 @@ public partial class SasyContext : DbContext
 
             entity.HasOne(d => d.EmailNavigation).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.Email)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Email_Email");
         });
 

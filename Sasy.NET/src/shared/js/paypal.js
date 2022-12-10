@@ -96,32 +96,32 @@ export async function init(
 	console.log(totale);
 	putorder(nome, cognome, indirizzo, cap, domicilio, totale, cittavar, spedizione);
 	try {
-	// 	await paypal_sdk.Buttons({
-	// 		createOrder: function (data, actions) {
-	// 			return actions.order.create({
-	// 				purchase_units: [
-	// 					{
-	// 						amount: {
-	// 							value: totale
-	// 						}
-	// 					}
-	// 				]
-	// 			});
-	// 		},
-	// 		onApprove: function (data, actions) {
-	// 			console.log('approve');
-	// 			return actions.order.capture().then(async function (details) {
+		await paypal_sdk.Buttons({
+			createOrder: function (data, actions) {
+				return actions.order.create({
+					purchase_units: [
+						{
+							amount: {
+								value: totale
+							}
+						}
+					]
+				});
+			},
+			onApprove: function (data, actions) {
+				console.log('approve');
+				return actions.order.capture().then(async function (details) {
 	 				putorder(nome, cognome, indirizzo, cap, domicilio, cart, totale, cittavar, spedizione);
-	// 			});
-	// 		},
-	// 		onError: function (err) {
-	// 			dialogs.alert(
-	// 				"Errore durante la registrazione dell'ordine, contattarci, fornendo i dettagli del pagamento per richiedere il rimborso"
-	// 			);
-	// 		}
-	// 	})
-	// 		.render('#paypal');
+				});
+			},
+			onError: function (err) {
+				dialogs.alert(
+					"Errore durante la registrazione dell'ordine, contattarci, fornendo i dettagli del pagamento per richiedere il rimborso"
+				);
+			}
+		})
+			.render('#paypal');
 	} catch (error) {
-	// 	console.error('failed to render the PayPal Buttons', error);
+		console.error('failed to render the PayPal Buttons', error);
 	}
 }

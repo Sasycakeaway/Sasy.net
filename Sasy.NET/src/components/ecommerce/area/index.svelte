@@ -2,8 +2,13 @@
   import { onMount } from "svelte";
   import {is_logged} from "../../../shared/js/is_logged";
   function logout() {
-    localStorage.clear();
-    sessionStorage.clear();
+    document.cookie.replace(
+  /(?<=^|;).+?(?=\=|;|$)/g,
+  name => location.hostname
+    .split(/\.(?=[^\.]+\.)/)
+    .reduceRight((acc, val, i, arr) => i ? arr[i]='.'+val+acc : (arr[i]='', arr), '')
+    .map(domain => document.cookie=`${name}=;max-age=0;path=/;domain=${domain}`)
+);
     location.href = "/";
   }
   onMount(async () => {
